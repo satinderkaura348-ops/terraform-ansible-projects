@@ -3,4 +3,5 @@ terra-key
 terra-key.pub
 .terraform
 .terraform.lock.hcl
-.terraform*
+terraform.tfstate
+terraform.tfstate.backup
