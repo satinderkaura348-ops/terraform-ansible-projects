@@ -61,25 +61,26 @@ resource "aws_security_group" "my_security_group" {
 # ec2 instance
 resource "aws_instance" "my-test" {
     for_each = tomap ({
-        Test-automate-micro = "t2.micro"
-        # Test-automate-medium = "t2.medium"
+        Test-master-ubuntu = "ami-0279a86684f669718"
+        Test-slave1-aws = "ami-09739caf42748cab9"
+        Test-slave2-rhel = "ami-02010f4ba46655bb2"
     }) # meta argument
 
     depends_on = [aws_security_group.my_security_group, aws_key_pair.my_key]
 
     key_name = aws_key_pair.my_key.key_name
     vpc_security_group_ids = [aws_security_group.my_security_group.id]
-    instance_type = each.value
-    ami = var.ec2_ami_id   # ubuntu   
+    instance_type = var.ec2_instance_type
+    ami = each.value  
     subnet_id = data.aws_subnets.default.ids[0]   # Specify subnet explicitly
     associate_public_ip_address = true
-    user_data = file("install_nginx.sh")
+    # user_data = file("install_nginx.sh")
     root_block_device {
         volume_size = var.env == "prd" ? 20 : var.ec2_default_root_storage_size    # if env is prd then 20GiB otherwise default root storage
         volume_type = "gp3"
     }
     tags = {
-        name = each.key
+        Name = each.key
         Environment = var.env
     }
 }
