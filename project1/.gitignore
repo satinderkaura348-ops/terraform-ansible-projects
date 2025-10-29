@@ -1,0 +1,7 @@
+variables.tf
+terra-key
+terra-key.pub
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
